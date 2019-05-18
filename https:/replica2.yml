@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: ReplicaSet
+metadata: 
+ name: resoure
+ namespace: kubereplica
+spec: 
+ replicas: 4
+ selector:
+  matchLabels: 
+   app: gopi1
+ template:
+   metadata: 
+    labels:
+     app: gopi1
+   spec: 
+    containers:
+     - name: con
+       image: nginx
+       ports:
+        - containerPort: 80
+                                

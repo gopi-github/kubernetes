@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata: 
+ name: rolling
+spec: 
+ replicas: 3 
+ selector:
+  matchLabels:
+   app: gopi2
+ strategy:
+  type: RollingUpdate
+  rollingUpdate:
+   maxSurge: 0
+   maxUnavailable: 1
+ minReadySeconds: 5
+ template:
+  metadata:
+   labels:
+    app: gopi2
+  spec:
+   containers:
+    - name: con1
+      image: nginx:1.15
+      ports: 
+       - containerPort: 80
