@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-frontend-svc
+spec:
+  type: NodePort
+  ports:
+    - name: web-port
+      port: 80
+      targetPort: 80
+      nodePort: 30001
+  selector:
+    app: wordpress
+    #---
+    #apiVersion: v1
+    #kind: Service
+    #metadata:
+    #  name: wordpress-backend-svc
+    #spec:
+    #  type: ClusterIP
+    #  ports:
+    #    - name: db-port
+    # port: 3306
+    # targetPort: 3306
+    #  selector:
+    #    app: backend
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frontend-deployment
+  labels:
+    app: wordpress
+spec:
+  containers:
+    - name: wordpress-con
+      image: wordpress
+      ports:
+        - containerPort: 80
+      env:
+        - name: WORDPRESS_DB_HOST
+          value: 35.238.77.164:30001
+        - name: WORDPRESS_DB_PASSWORD
+          value: password
+          #---
+          #apiVersion: v1
+          #kind: Pod
+          #metadata:
+          #  name: backend-deployment
+          #  labels:
+          #    app: backend
+          #spec:
+          #  containers:
+          #    - name: mysql-con
+          #      image: mysql:5.6
+          #      ports:
+          #        - containerPort: 3306
+          #      env:
+          #        - name: MYSQL_ROOT_PASSWORD
+          #          value: abcd
